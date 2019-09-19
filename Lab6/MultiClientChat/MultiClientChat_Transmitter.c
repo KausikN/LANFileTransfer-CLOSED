@@ -116,14 +116,15 @@ int main()
 			{
 				printf("\n(Text Receiver Started)\n");
 				char src_name[50];
-				while(1)
+				int exitloop = 0;
+				while(exitloop == 0)
 				{
 					recv(c_socket, src_name, sizeof(src_name), 0);
 					recv(c_socket, text, sizeof(text), 0);
 					printf("\nReceived from %s: %s\n", src_name, text);
 					if(strcmp(text, "/exit") == 0)
 					{
-						break;
+						exitloop = 1;
 					}
 				}
 				printf("\n(Text Receiver Stopped)\n");
