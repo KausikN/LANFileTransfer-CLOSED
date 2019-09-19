@@ -120,6 +120,29 @@ int main()
 				if(accepterror == 0)
 				{
 
+					int s_server_child = s_server;
+					int clientindex = clients_size;
+					clients[clientindex].s_server = s_server_child;
+					strcpy(clients[clientindex].ipaddr, clientip);
+
+					char name[50];
+					char ipaddr[20];
+					char port_str[20];
+					char dest_name[50];
+
+					char text[200];
+
+					recv(s_server_child, name, sizeof(name), 0);
+					recv(s_server_child, ipaddr, sizeof(ipaddr), 0);
+					recv(s_server_child, port_str, sizeof(port_str), 0);
+					
+
+					strcpy(clients[clientindex].name, name);
+					//strcpy(clients[clientindex].ipaddr, ipaddr);
+					
+					strcpy(clients[clientindex].port_str, port_str);
+					clients_size++;
+
 					int pid = fork();
 					if(pid > 0)
 					{
@@ -128,28 +151,7 @@ int main()
 					} 
 					else if(pid == 0)
 					{
-						int s_server_child = s_server;
-						int clientindex = clients_size;
-						clients[clientindex].s_server = s_server_child;
-						strcpy(clients[clientindex].ipaddr, clientip);
-
-						char name[50];
-						char ipaddr[20];
-						char port_str[20];
-						char dest_name[50];
-
-						char text[200];
-
-						recv(s_server_child, name, sizeof(name), 0);
-						recv(s_server_child, ipaddr, sizeof(ipaddr), 0);
-						recv(s_server_child, port_str, sizeof(port_str), 0);
 						
-
-						strcpy(clients[clientindex].name, name);
-						//strcpy(clients[clientindex].ipaddr, ipaddr);
-						
-						strcpy(clients[clientindex].port_str, port_str);
-						clients_size++;
 
 						DisplayConnectedClients(clients, clients_size);
 						/*

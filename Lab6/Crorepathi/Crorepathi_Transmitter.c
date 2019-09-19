@@ -114,10 +114,12 @@ int main()
 
 			printf("[+] Server Connected\n\n");
 
+			char over[2];
+			
 			int exloop = 0;
 			while(exloop == 0)
 			{
-				char over[2];
+				
 				recv(c_socket, over, sizeof(over), 0);
 				if(over[0] == '1')
 				{
