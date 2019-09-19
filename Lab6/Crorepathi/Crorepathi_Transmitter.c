@@ -142,23 +142,23 @@ int main()
 			printf("\nResult: \nCorrect: ");
 			for(int i=0;i<strlen(result);i++)
 			{
-				printf("%c", result[i]);
 				if(result[i] == 'c')
 				{
 					printf("\nWrong: ");
 				}
-				if(result[i] == 'w')
+				else if(result[i] == 'w')
 				{
 					printf("\nLate: ");
 				}
-				if(result[i] == 'l')
+				else if(result[i] == 'l')
 				{
 					printf("\nTotal no of questions: ");
 				}
-				if(result[i] == 'q')
+				else if(result[i] == 'q')
 				{
 					printf("\n");
 				}
+				else printf("%c", result[i]);
 			}
 		}
 
