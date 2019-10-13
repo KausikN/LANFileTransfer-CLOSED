@@ -1,5 +1,5 @@
 #include<stdio.h>
-
+#include<arpa/inet.h>
 #include<stdlib.h>
 #include<sys/types.h>
 #include<sys/socket.h>
@@ -77,8 +77,6 @@ int main()
 	scanf("%d", &port);
 
 	int pid = fork();
-
-	
 
 	if(pid == 0)
 	{
@@ -172,11 +170,6 @@ int main()
 
 		while(exit == 0)
 		{
-			printf("Do you want to exit: ");
-			scanf("%d", &exit);
-
-			if(exit == 1) break;
-
 			printf("Enter filename: ");
 			scanf("%s", filename);
 
@@ -222,6 +215,11 @@ int main()
 				
 				printf("File %s Sent Succesfully.\n", filename_withext);
 			}
+
+			printf("Do you want to exit: ");
+			scanf("%d", &exit);
+
+			if(exit == 1) break;
 		}
 		close(c_socket_send);
 

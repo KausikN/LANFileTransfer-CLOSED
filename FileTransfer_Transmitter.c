@@ -1,11 +1,11 @@
 #include<stdio.h>
-
 #include<stdlib.h>
 #include<sys/types.h>
 #include<sys/socket.h>
 #include<netinet/in.h>
 #include<string.h>
 #include<unistd.h>
+#include<arpa/inet.h>
 
 int c_socket;
 
@@ -46,6 +46,11 @@ int main()
 		char buffer[2000];
 		char charbuf[1];
 
+		long print_interval = 0;
+		printf("Enter progress printing interval: \n");
+		scanf("%ld", &print_interval);
+
+
 		printf("Enter filename: ");
 		scanf("%s", filename);
 
@@ -58,6 +63,16 @@ int main()
 
 		printf("Filename %s.\n", filename_withext);
 
+		long file_size = 0;
+
+		FILE *fp_size;
+		fp_size = fopen(filename_withext, "r");
+
+		fseek(fp_size, 0L, SEEK_END);
+		file_size = ftell(fp_size);
+
+		fclose(fp_size);
+
 		FILE *fp;
 		fp = fopen(filename_withext, "r");
 
@@ -68,6 +83,8 @@ int main()
 		send(c_socket, filename, sizeof(filename), 0);
 		send(c_socket, ext, sizeof(ext), 0);
 
+		printf("\nStarted sending data...\n");
+		int index = 1;
 		while(!feof(fp))
 		{ 
 			/*
@@ -83,6 +100,8 @@ int main()
 			send(c_socket, endoffile, sizeof(endoffile), 0);
 			send(c_socket, charbuf, sizeof(charbuf), 0);
 
+			if(index % print_interval == 0) printf("%d / %ld\n", index, file_size);
+			index++;
 		}
 		/*
 		strcpy(buffer, "end");
@@ -97,6 +116,7 @@ int main()
 		send(c_socket, endoffile, sizeof(endoffile), 0);
 		
 		printf("buffer Sent.\n");
+		fclose(fp);
 	}
 
 	close(c_socket);
