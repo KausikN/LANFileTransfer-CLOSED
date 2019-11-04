@@ -39,7 +39,7 @@ int ServerCreate(int port)
 	server.sin_port = htons(port);
 	server.sin_addr.s_addr = INADDR_ANY;
 
-	
+
 	if(bind(s_socket, (struct sockaddr*)&server, sizeof(server)) != -1)
 	{
 		printf("Waiting for Connection.....\n");
@@ -55,7 +55,7 @@ int ServerCreate(int port)
 		close(s_server);
 		close(s_socket);
 		return -777;
-	} 
+	}
 }
 
 int main()
@@ -81,7 +81,7 @@ int main()
 		{
 			printf("Failed init Client Receiver.\n");
 			return 0;
-		} 
+		}
 
 		while(exit == 0)
 		{
@@ -92,7 +92,7 @@ int main()
 
 			if(strlen(ext) == 0) return 0;
 
-			char acknowlegement[2]; 
+			char acknowlegement[2];
 
 			int acceptfile = 0;
 			printf("Do you want to accept %s.%s: ", filename, ext);
@@ -108,7 +108,7 @@ int main()
 				strcat(filename_withext, filename);
 				strcat(filename_withext, "_recv.");
 				strcat(filename_withext, ext);
-				
+
 				FILE *fp;
 				fp = fopen(filename_withext, "w");
 
@@ -119,7 +119,7 @@ int main()
 				{
 					recv(c_socket_recv, endoffile, sizeof(endoffile), 0);
 					if(endoffile[0] == '1') check = 1;
-					else 
+					else
 					{
 						recv(c_socket_recv, charbuf, sizeof(charbuf), 0);
 						//printf("buf: %s\n", charbuf);
@@ -127,10 +127,10 @@ int main()
 					}
 				}
 				fclose(fp);
-				
+
 				printf("File %s Received Succesfully.\n", filename_withext);
 			}
-			else 
+			else
 			{
 				printf("File %s.%s rejected for download.\n", filename, ext);
 
@@ -141,7 +141,7 @@ int main()
 		close(c_socket_recv);
 		printf("You have stopped receiving files...\n");
 	}
-	else 
+	else
 	{
 		// Parent for sending
 		c_socket_send = ClientCreate(9009, 1, "");
@@ -187,13 +187,13 @@ int main()
 			send(c_socket_send, filename, sizeof(filename), 0);
 			send(c_socket_send, ext, sizeof(ext), 0);
 
-			char acknowlegement[2]; 
+			char acknowlegement[2];
 			recv(c_socket_send, acknowlegement, sizeof(acknowlegement), 0);
 
 			if(acknowlegement[0] == '1')
 			{
 				while(!feof(fp))
-				{ 
+				{
 					fscanf(fp, "%c", &charbuf[0]);
 					//printf("buf: %s\n", charbuf);
 					send(c_socket_send, endoffile, sizeof(endoffile), 0);
@@ -202,7 +202,7 @@ int main()
 				}
 				endoffile[0] = '1';
 				send(c_socket_send, endoffile, sizeof(endoffile), 0);
-				
+
 				printf("File %s Sent Succesfully.\n", filename_withext);
 			}
 		}
@@ -212,4 +212,3 @@ int main()
 	}
 	return 0;
 }
-
